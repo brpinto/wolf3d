@@ -54,6 +54,6 @@ A: Déplacer le joueur vers la gauche <br />
 S: Déplacer le joueur vers le bas <br />
 D: Déplacer le joueur vers la droite <br />
 Q: Rotation de la caméra vers la gauche <br />
-E: Rotation de la caméra vers la droit <br />
+E: Rotation de la caméra vers la droite <br />
 
 La souris peut également servir à faire pivoter la caméra, comme dans un FPS.
