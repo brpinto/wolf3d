@@ -6,8 +6,7 @@
 /*   By: brpinto <brpinto@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 15:29:40 by qbenaroc          #+#    #+#             */
-/*   Updated: 2019/09/09 13:44:12 by qbenaroc         ###   ########.fr       */
-/*   Updated: 2019/08/20 19:42:47 by qbenaroc         ###   ########.fr       */
+/*   Updated: 2019/09/18 15:52:22 by brpinto          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +14,7 @@
 
 void	init_vision(int cam_dir, t_cam *cam)
 {
+	cam->sensitivity = 10;
 	if (cam_dir == CAM_N)
 	{
 		cam->vision.x = 0;
@@ -68,7 +68,6 @@ void	init_player_pos(t_env *e)
 
 void		init_player(t_env *e)
 {
-	e->player.w_speed = 5;
 	e->player.r_speed = 5;
 	e->player.hp = 100;
 	init_player_pos(e);
@@ -81,10 +80,11 @@ void		init_win(t_env *e, int w, int h)
 	e->win.h = h;
 	e->win.window = SDL_CreateWindow("Wolf3D", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, e->win.w, e->win.h, SDL_WINDOW_RESIZABLE);
 	SDL_PumpEvents();
-	e->win.current_state = (Uint8 *)SDL_GetKeyboardState(NULL);
+	e->win.keyb_curr = (Uint8 *)SDL_GetKeyboardState(NULL);
 	e->win.renderer = SDL_CreateRenderer(e->win.window, -1, SDL_RENDERER_ACCELERATED);
 	e->menu.in = MENU;
 	e->menu.oldin = e->menu.in;
+	SDL_WarpMouseInWindow(e->win.window, (w / 2), (h / 2));
 }
 
 void		init_option(t_env *e)

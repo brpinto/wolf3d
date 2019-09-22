@@ -6,7 +6,7 @@
 /*   By: brpinto <brpinto@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 13:40:14 by qbenaroc          #+#    #+#             */
-/*   Updated: 2019/09/09 18:56:17 by brpinto          ###   ########.fr       */
+/*   Updated: 2019/09/18 14:49:59 by brpinto          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 //# include <SDL_ttf.h>
 #include <stdio.h>
 
-# define VIEW_DIST 277
+# define VIEW_DIST 350
 # define CUBE_SIZE 100
 # define ANGLE 66.0
 # define FPS_TARGET 1000 / 60
@@ -93,8 +93,8 @@ typedef struct			s_win
 	SDL_Event			event;
 	SDL_Renderer		*renderer;
 	SDL_Rect			disp_rect;
-	Uint8				*current_state;
-	Uint8				*previous_state;
+	Uint8				*keyb_curr;
+	Uint8				keyb_prev[283];
 }						t_win;
 
 typedef struct			s_map
@@ -121,6 +121,7 @@ typedef struct			s_cam
 	t_int				vision;
 	unsigned int		fps;
 	unsigned int		show_fps;
+	int					sensitivity;
 }						t_cam;
 
 typedef struct			s_inventory
@@ -132,7 +133,7 @@ typedef struct			s_inventory
 typedef struct			s_player
 {
 	char				*name;
-	int					w_speed;
+	t_int				w_speed;
 	int					r_speed;
 	int					hp;
 	int					stamina;
@@ -177,6 +178,7 @@ typedef struct			s_env
 	t_win				win;
 	t_tex				tex;
 	t_disp_list			*disp_lst;
+	char				*editor;
 }						t_env;
 
 int						display_error(char *reason);
@@ -185,9 +187,11 @@ void					init_env(t_env *e);
 void					init_player(t_env *e);
 void					key_events(t_env *e);
 void					player_mvt(int key, t_player *player, t_map map);
-void					player_rot(int key, t_player *player, int curr_mouse);
+//void					player_stop(int key, t_player *player);
+void					player_rot(int key, t_player *player);
 float					angle_period(float angle);
 void					bresenham(t_env *e, t_cam *cam, t_float next_pos, int i);
+void					bresenham2(t_env *e, SDL_Renderer *renderer, t_int start, t_int end);
 void					display_minimap(t_env *e);
 int						ray_collision(int x, int y, t_map *map);
 t_int					convert_to_map(int x, int y);
@@ -195,6 +199,7 @@ float					convert_to_rad(float angle);
 void					raycast(t_env *e, t_win *win, t_cam *cam);
 void					draw_fov(SDL_Renderer *renderer, t_float current);
 void					draw_wall(t_env *e, t_cam *cam, t_float current, int i);
+void					run_editor(t_env *e);
 
 //useless
 void					print_tab(int **tab, int w, int h);

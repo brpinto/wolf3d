@@ -6,7 +6,7 @@
 /*   By: brpinto <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/29 09:49:46 by brpinto           #+#    #+#             */
-/*   Updated: 2019/09/09 18:50:17 by brpinto          ###   ########.fr       */
+/*   Updated: 2019/09/18 13:40:23 by brpinto          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,44 +16,77 @@
 void		player_mvt(int key, t_player *player, t_map map)
 {
 	float	rad_angle;
-	t_float	move;
 
 	rad_angle = convert_to_rad(player->cam.angle);
-	if (key == SDLK_w)
+	if (key == SDL_SCANCODE_W)
 	{
-		move.x = player->cam.pos.x + player->w_speed * cos(rad_angle);
-		move.y = player->cam.pos.y - player->w_speed * sin(rad_angle);
+		player->w_speed.x = 5 * cos(rad_angle);
+		player->w_speed.y = -5 * sin(rad_angle);
 	}
-	else if (key == SDLK_s)
+	if (key == SDL_SCANCODE_S)
 	{
-		move.x = player->cam.pos.x - player->w_speed * cos(rad_angle);
-		move.y = player->cam.pos.y + player->w_speed * sin(rad_angle);
+		player->w_speed.x = -5 * cos(rad_angle);
+		player->w_speed.y = 5 * sin(rad_angle);
 	}
-	else if (key == SDLK_d)
+	if (key == SDL_SCANCODE_D)
 	{
-		move.x = player->cam.pos.x + player->w_speed * cos(rad_angle - (M_PI / 2));
-		move.y = player->cam.pos.y - player->w_speed * sin(rad_angle - (M_PI / 2));
+		player->w_speed.x = 5 * cos(rad_angle - (M_PI / 2));
+		player->w_speed.y = -5 * sin(rad_angle - (M_PI / 2));
 	}
-	else
+	if (key == SDL_SCANCODE_A)
 	{
-		move.x = player->cam.pos.x + player->w_speed * cos(rad_angle + (M_PI / 2));
-		move.y = player->cam.pos.y - player->w_speed * sin(rad_angle + (M_PI / 2));
+		player->w_speed.x = 5 * cos(rad_angle + (M_PI / 2));
+		player->w_speed.y = -5 * sin(rad_angle + (M_PI / 2));
 	}
-	if (!ray_collision(move.x, move.y, &map))
+	if (!ray_collision(player->cam.pos.x + player->w_speed.x, player->cam.pos.y + player->w_speed.y, &map))
 	{
-		player->cam.pos.x = move.x;
-		player->cam.pos.y = move.y;
+		player->cam.pos.x += player->w_speed.x;
+		player->cam.pos.y += player->w_speed.y;
 	}
 }
 
-void		player_rot(int key, t_player *player, int curr_mouse)
+/*void	player_stop(int key, t_player *player)
 {
-	(void)key;
-/*	if (key == SDLK_q)
+	if (key == SDL_SCANCODE_W)
+	{
+		if (player->w_speed.x > 0 && player->w_speed.y < 0)
+		{
+			player->w_speed.x = 0;
+			player->w_speed.y = 0;
+		}
+	}
+	if (key == SDLK_s)
+	{
+		if (player->w_speed.x < 0 && player->w_speed.y > 0)
+		{
+			player->w_speed.x = 0;
+			player->w_speed.y = 0;
+		}
+	}
+	if (key == SDLK_d)
+	{
+		if (player->w_speed.x > 0 && player->w_speed.y < 0)
+		{
+			player->w_speed.x = 0;
+			player->w_speed.y = 0;
+		}
+	}
+	if (key == SDL_SCANCODE_A)
+	{
+		if (player->w_speed.x > 0 && player->w_speed.y < 0)
+		{
+			player->w_speed.x = 0;
+			player->w_speed.y = 0;
+		}
+	}
+}*/
+
+void		player_rot(int key, t_player *player)
+{
+	if (key == SDL_SCANCODE_Q)
 		player->cam.angle += player->r_speed;
-	if (key == SDLK_e)
-		player->cam.angle -= player->r_speed;*/
-	player->cam.angle = angle_period((player->cam.angle + curr_mouse));
+	if (key == SDL_SCANCODE_E)
+		player->cam.angle -= player->r_speed;
 }
 
 void		disp_player(t_env *e)
